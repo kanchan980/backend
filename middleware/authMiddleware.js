@@ -1,0 +1,37 @@
+const jwt = require("jsonwebtoken");
+
+const verifyToken = (req, res, next) => {
+
+  const authHeader =
+    req.headers.authorization;
+
+  if (!authHeader) {
+    return res.json({
+      message: "Token Required",
+    });
+  }
+
+  const token =
+    authHeader.split(" ")[1];
+
+  try {
+
+    const verified = jwt.verify(
+      token,
+      "mysecretkey"
+    );
+
+    req.user = verified;
+
+    next();
+
+  } catch (error) {
+
+    res.json({
+      message: "Invalid Token",
+    });
+
+  }
+};
+
+module.exports = verifyToken;

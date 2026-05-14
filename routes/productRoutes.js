@@ -2,15 +2,38 @@ const express = require("express");
 
 const router = express.Router();
 
+const verifyToken =
+  require("../middleware/authMiddleware");
+
 const {
   getProducts,
+  addProduct,
   updateProduct,
   deleteProduct,
 } = require("../controllers/productController");
 
-router.get("/", getProducts);
-router.put("/:id", updateProduct);
+router.get(
+  "/",
+  verifyToken,
+  getProducts
+);
 
-router.delete("/:id", deleteProduct);
+router.post(
+  "/",
+  verifyToken,
+  addProduct
+);
+
+router.put(
+  "/:id",
+  verifyToken,
+  updateProduct
+);
+
+router.delete(
+  "/:id",
+  verifyToken,
+  deleteProduct
+);
 
 module.exports = router;
